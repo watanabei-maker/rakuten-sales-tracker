@@ -31,7 +31,7 @@ class NotionCredentials:
         api_key = os.environ.get("NOTION_API_KEY")
         if not api_key:
             raise RuntimeError("NOTION_API_KEY を環境変数に設定してください")
-        return cls(api_key=api_key)
+        return cls(api_key=api_key.strip())
 
 
 class NotionClient:

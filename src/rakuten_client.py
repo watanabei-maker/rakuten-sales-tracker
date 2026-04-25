@@ -36,7 +36,7 @@ class RakutenCredentials:
             raise RuntimeError(
                 "RAKUTEN_SERVICE_SECRET と RAKUTEN_LICENSE_KEY を環境変数に設定してください"
             )
-        return cls(service_secret=secret, license_key=license_key)
+        return cls(service_secret=secret.strip(), license_key=license_key.strip())
 
     def auth_header(self) -> str:
         token = f"{self.service_secret}:{self.license_key}".encode("utf-8")
