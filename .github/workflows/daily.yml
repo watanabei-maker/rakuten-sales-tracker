@@ -2,12 +2,11 @@ name: Daily Rakuten Sales Fetch
 
 on:
   schedule:
-    # 毎日 JST 06:00 (UTC 21:00) に実行
     - cron: "0 21 * * *"
-  workflow_dispatch: # 手動実行も可能
+  workflow_dispatch:
 
 permissions:
-  contents: write # data/ への commit に必要
+  contents: write
 
 jobs:
   fetch:
@@ -33,6 +32,13 @@ jobs:
 
       - name: Aggregate
         run: python src/aggregate.py
+
+      - name: Sync to Notion (Rakuten channel)
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_DAILY_DB_ID: ${{ secrets.NOTION_DAILY_DB_ID }}
+          NOTION_RANKING_DB_ID: ${{ secrets.NOTION_RANKING_DB_ID }}
+        run: python src/sync_notion.py Rakuten
 
       - name: Commit and push
         run: |
